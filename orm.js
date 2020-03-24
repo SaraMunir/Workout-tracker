@@ -6,7 +6,6 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { use
 
 const Schema = mongoose.Schema;
 
-
 const workOutSchema = new Schema({
             type: String,
             name: String,
@@ -43,10 +42,10 @@ async function createWorkout( myPost ){
                 sets: myPost.sets
         } );
         console.log( 'in orm created workout is ', myResult)
-        const wrkOutId = myResult._id;
-        dbResult = await WorkOutDay.update({ date: currentDay}, { $push: { workouts: wrkOutId } });
-        dbResult = await WorkOutDay.find({ date: currentDay});
-        console.log(`current day data is :`, dbResult)
+        // const wrkOutId = myResult._id;
+        // dbResult = await WorkOutDay.update({ date: currentDay}, { $push: { workouts: wrkOutId } });
+        // dbResult = await WorkOutDay.find({ date: currentDay});
+        // console.log(`current day data is :`, dbResult)
 
         return myResult;
 
@@ -69,8 +68,18 @@ async function listWorkOuts(){
 }
 async function listCompletedWorkOuts(){
     const myList =  await WorkOut.find({ completed: true})
-    console.log('my completed list in orm is : ', myList);
+    console.log('my completed last workout in orm is : ', myList);
     return myList;
+}
+async function lastWorkOut(){
+    const myLastWrkOutDay =  await WorkOut.find({ completed: true, }).sort({ _id: -1 }).limit(1)
+    const lastDate= myLastWrkOutDay[0].date
+    console.log('my last workout date in orm is : ', lastDate);
+    // console.log('my completed last workout in orm is : ', myLastWrkOut);
+    
+    const myLastWrkOuts =  await WorkOut.find({ date: lastDate});
+
+    return myLastWrkOuts;
 }
 
 // completeWorkout
@@ -78,7 +87,7 @@ async function completeWorkout( workOtId, date ){
 
     const myResult = await WorkOut.update({_id: workOtId},
         { $set:{    completed: true,
-                    updated_at: date
+                    date: date
         } })
     console.log(myResult);
     return myResult;
@@ -88,5 +97,6 @@ module.exports = {
     createWorkout,
     listWorkOuts,
     completeWorkout,
-    listCompletedWorkOuts
+    listCompletedWorkOuts,
+    lastWorkOut
 }

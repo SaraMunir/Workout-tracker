@@ -222,7 +222,13 @@ function handleToastAnimationEnd() {
   }
 }
 async function completeWorkOut(workID){
-  let currentUpdateTime = $.now()
+
+  let year = new Date().getFullYear();
+  let month = new Date().getMonth()+1;
+  var day = new Date().getDate();
+  let currentUpdateTime = `${year}-0${month}-${day}`
+
+  console.log('currentUpdateTime', currentUpdateTime)
   const apiResult = await $.ajax({
     url: `/api/completeWorkout/${workID}/${currentUpdateTime}`,
     type: 'DELETE'

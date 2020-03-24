@@ -26,6 +26,11 @@ app.get( '/api/completedWorkouts', async function( req, res ){
     const myCompletedWorkOutList = await orm.listCompletedWorkOuts();
     res.send(myCompletedWorkOutList);
 });
+app.get( '/api/lastworkouts', async function( req, res ){
+    const myLastWorkOut = await orm.lastWorkOut();
+    console.log(myLastWorkOut)
+    res.send(myLastWorkOut);
+});
 
 app.delete( `/api/completeWorkout/:id/:time`, async function( req, res ){
     console.log( `[DELETE api/completeWorkout] id=${req.params.id}` );
