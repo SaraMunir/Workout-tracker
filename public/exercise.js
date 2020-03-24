@@ -14,23 +14,32 @@ const addButton = document.querySelector("button.add-another");
 const toast = document.querySelector("#toast");
 const newWorkout = document.querySelector(".new-workout")
 
+
+$(document).ready( async function(){
+
+
+  printWorkOuts();
+
+})
+
+
 let workoutType = null;
 let shouldNavigateAway = false;
 
-async function initExercise() {
-  let workout;
+// async function initExercise() {
+//   let workout;
 
-  if (location.search.split("=")[1] === undefined) {
-    workout = await API.createWorkout()
-    console.log(workout)
-  }
-  if (workout) {
-    location.search = "?id=" + workout._id;
-  }
+//   if (location.search.split("=")[1] === undefined) {
+//     // workout = await API.createWorkout()
+//     console.log(workout)
+//   }
+//   if (workout) {
+//     location.search = "?id=" + workout._id;
+//   }
 
-}
+// }
 
-initExercise();
+// initExercise();
 
 function handleWorkoutTypeChange(event) {
   workoutType = event.target.value;
@@ -113,17 +122,115 @@ async function handleFormSubmit(event) {
     workoutData.reps = Number(repsInput.value.trim());
     workoutData.duration = Number(resistanceDurationInput.value.trim());
   }
+  console.log('workoutData created is : ', workoutData);
 
-  await API.addExercise(workoutData);
+  // await API.addExercise(workoutData);
+  // await API.createWorkout(workoutData);
+  apiResult = await $.post( '/api/postWorkouts', workoutData);
+  printWorkOuts();
   clearInputs();
+  cardioForm.classList.add("d-none");
+  resistanceForm.classList.add("d-none");
   toast.classList.add("success");
+
 }
+async function printWorkOuts(){
+
+  const myWorkOutList = await $.get( '/api/workouts');
+  console.log('myWorkOutList is : ', myWorkOutList)
+
+  $('#appendWorkOutList').html('');
+
+  
+  myWorkOutList.forEach( function( workout ){
+
+    const currentDay = new Date()
+    console.log(currentDay);
+    const today= moment(currentDay).format('dddd');
+    console.log(today);
+
+    
+    $('#currentDay').html(`${today} Workout`)
+    if (workout.type === "resistance"){
+      $('#appendWorkOutList').append( `
+    <h2>Your Exercise  to be completed List</h2>
+    <div class="card-type">
+      <div class="workout-type flexingComponents">
+        <h4 class="bordered-label">Exercise Type: ${workout.type}</h4>
+      </div>
+      <div class="flexingComponents exerciseL">
+        <h4 class="bordered-label">Exercise Name: ${workout.name}</h4>
+      </div>
+      <div class="flexingComponents weightL">
+        <h4 class="bordered-label">Weight (lbs):</h4>
+        <div class="bordered">${workout.weight}</div>
+      </div>
+      <div class="flexingComponents setsL">
+        <h4 class="bordered-label">Sets:</h4>
+        <div class="bordered">${workout.sets}</div>
+      </div>
+      <div class="flexingComponents repsL">
+        <h4 class="bordered-label">Reps:</h4>
+        <div class="bordered">${workout.reps}</div>
+      </div>
+      <div class="flexingComponents durationL">
+        <h4 class="bordered-label">Duration (minutes):</h4>
+        <div class="bordered">${workout.duration}</div>
+      </div>
+      <div class="flexingComponents">
+        <div class="huge ui blue button" onClick="completeWorkOut('${workout._id}')" style="margin: 0 auto;">
+          Complete
+        </div>
+      </div>
+    </div>
+      `)
+    }
+    else if (workout.type === "cardio"){
+      $('#appendWorkOutList').append( `
+    <h2>Your Exercise  to be completed List</h2>
+    <div class="card-type">
+      <div class="workout-type flexingComponents">
+        <h4 class="bordered-label">Exercise Type: ${workout.type}</h4>
+      </div>
+      <div class="flexingComponents exerciseL">
+        <h4 class="bordered-label">Exercise Name: ${workout.name}</h4>
+      </div>
+      <div class="flexingComponents DistanceL">
+        <h4 class="bordered-label">Distance (miles):</h4>
+        <div class="bordered">${workout.distance}</div>
+      </div>
+      <div class="flexingComponents DurationL">
+        <h4 class="bordered-label">Duration (minutes):</h4>
+        <div class="bordered">${workout.duration}</div>
+      </div>
+      <div class="flexingComponents">
+        <div class="huge ui blue button" onClick="completeWorkOut('${workout._id}')" style="margin: 0 auto;">
+          Complete
+        </div>
+      </div>
+    </div>
+      `)
+    }
+  })
+};
+
 
 function handleToastAnimationEnd() {
   toast.removeAttribute("class");
   if (shouldNavigateAway) {
     location.href = "/";
   }
+}
+async function completeWorkOut(workID){
+  let currentUpdateTime = $.now()
+  const apiResult = await $.ajax({
+    url: `/api/completeWorkout/${workID}/${currentUpdateTime}`,
+    type: 'DELETE'
+  });
+  alert( apiResult.message );
+  printWorkOuts();
+  // location.href = '/index.html';
+
 }
 
 function clearInputs() {
@@ -154,3 +261,5 @@ toast.addEventListener("animationend", handleToastAnimationEnd);
 document
   .querySelectorAll("input")
   .forEach(element => element.addEventListener("input", validateInputs));
+
+

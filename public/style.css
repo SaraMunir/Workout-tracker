@@ -425,6 +425,28 @@ form > button {
   padding: 10px;
 }
 
+.flexingComponents {
+  margin: 15px auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid coral;
+}
+.card-type {
+  padding: 25px;
+}
+.bordered{
+  width: 60%;
+  padding: 10px;
+  border: 1px solid red;
+}
+.bordered-label{
+  width: 100%;
+  padding: 10px;
+
+}
+
+
 @keyframes toast {
   50% {
     opacity: 1;

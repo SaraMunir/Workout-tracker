@@ -7,13 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <title>Fitness Tracker</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
 </head>
 
 <body>
   <nav>
     <a href="/">Fitness Tracker</a>
-    <a href="/stats">Dashboard</a>
+    <a href="/stats.html">Dashboard</a>
   </nav>
   <div class="wrapper">
     <header>
@@ -74,6 +77,44 @@
             <button disabled class="huge ui positive button add-another">
               Add Exercise
             </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="ui container exercise">
+      <div class="ui raised card m-auto">
+        <h2 id="currentDay"></h2>
+        
+        <form action="Get" id="appendWorkOutList" >
+          <div class="workout-type">
+            <h4>Exercise Type:</h4>
+            <h5>Resistanc</h5>
+          </div>
+          <div class="card-type">
+            <div class="flexingComponents exerciseL">
+              <h4 class="bordered-label">Exercise Name:</h4>
+            </div>
+            <div class="flexingComponents weightL">
+              <h4 class="bordered-label">Weight (lbs):</h4>
+              <div class="bordered">90</div>
+            </div>
+            <div class="flexingComponents setsL">
+              <h4 class="bordered-label">Sets:</h4>
+              <div class="bordered">5</div>
+            </div>
+            <div class="flexingComponents repsL">
+              <h4 class="bordered-label">Reps:</h4>
+              <div class="bordered">6</div>
+            </div>
+            <div class="flexingComponents durationL">
+              <h4 class="bordered-label">Duration (minutes):</h4>
+              <div class="bordered">6</div>
+            </div>
+            <div class="flexingComponents">
+              <div class="huge ui blue button" onClick="completeWorkOut(wrkId)" style="margin: 0 auto;">
+                Complete
+              </div>
+            </div>
           </div>
         </form>
       </div>
