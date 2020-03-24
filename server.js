@@ -26,6 +26,10 @@ app.get( '/api/completedWorkouts', async function( req, res ){
     const myCompletedWorkOutList = await orm.listCompletedWorkOuts();
     res.send(myCompletedWorkOutList);
 });
+app.get( '/api/uncompletedworkouts', async function( req, res ){
+    const notCompletedList = await orm.listNonCompletedWorkOuts();
+    res.send(notCompletedList);
+});
 app.get( '/api/lastworkouts', async function( req, res ){
     const myLastWorkOut = await orm.lastWorkOut();
     console.log(myLastWorkOut)

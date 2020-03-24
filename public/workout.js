@@ -69,13 +69,10 @@ function renderWorkoutSummary(summary) {
   Object.keys(summary).forEach(key => {
     const p = document.createElement("p");
     const strong = document.createElement("strong");
-
     strong.textContent = workoutKeyMap[key];
     const textNode = document.createTextNode(`: ${summary[key]}`);
-
     p.appendChild(strong);
     p.appendChild(textNode);
-
     container.appendChild(p);
   });
 }

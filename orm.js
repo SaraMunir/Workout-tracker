@@ -71,6 +71,11 @@ async function listCompletedWorkOuts(){
     console.log('my completed last workout in orm is : ', myList);
     return myList;
 }
+async function listNonCompletedWorkOuts(){
+    const myNotCompletedList =  await WorkOut.find({ completed: false})
+    // console.log('my not completed last workout in orm is : ', myNotCompletedList);
+    return myNotCompletedList;
+}
 async function lastWorkOut(){
     const myLastWrkOutDay =  await WorkOut.find({ completed: true, }).sort({ _id: -1 }).limit(1)
     const lastDate= myLastWrkOutDay[0].date
@@ -98,5 +103,6 @@ module.exports = {
     listWorkOuts,
     completeWorkout,
     listCompletedWorkOuts,
-    lastWorkOut
+    lastWorkOut,
+    listNonCompletedWorkOuts
 }
