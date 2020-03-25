@@ -28,8 +28,9 @@
           <div>
             <div class="workout-stats"></div>
             <div class="buttons">
-              <a id="continue-btn" href="/exercise?" class="huge ui blue button">Continue Workout</a>
-              <a href="/exercise.html" class="huge positive ui button">New Workout</a>
+              <a id="continue-btn" href="/exercise?" class="huge ui blue button" style="display: none;" >Continue Workout</a>
+              <a href="/exercise.html" class="huge blue ui button"  id="cntBtn">Continue Workout</a>
+              <a href="/exercise.html" class="huge positive ui button" >New Workout</a>
             </div>
           </div>
         </div>
@@ -50,6 +51,22 @@
     // function continueBtn(){
     //     location.href = `/exercise?`;
     // }
+
+    $(document).ready( async function(){
+
+
+      const workout2 = await $.get( '/api/uncompletedworkouts');
+      console.log('my uncompleted workout is ', workout2)
+
+        if (workout2 == null ) {
+          // $('#cntBtn')
+          // document.querySelector("#cntBtn").classList.add("d-none");
+          $('#cntBtn').addClass("d-none")
+        }
+
+        })
+
+
   </script>
 </body>
 </html>
